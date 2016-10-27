@@ -1,15 +1,8 @@
-function [Force] = getforcedata(Alias)
+function [Force] = getforcedata(subject)
 %% Dossier des essais
-folderPath = ['\\10.89.24.15\f\Data\Shoulder\RAW\IRSST_' Alias.sujet 'd\trials\'];
+folderPath = ['\\10.89.24.15\f\Data\Shoulder\RAW\IRSST_' subject 'd\trials\'];
 %% noms des fichiers c3d
 C3dfiles = dir([folderPath '*.c3d']);
-%% Matrice d'étalonnage
-EtalonnageForce=[15.7377 -178.4176 172.9822 7.6998 -192.7411 174.1840;
-                 208.3629 -109.1685 -110.3583  209.3269 -104.9032 -103.5278;
-                 227.6774 222.8613 219.1087 234.3732 217.1453 221.2831;
-                 5.6472 -0.7266 -0.3242 5.4650 -8.9705 -8.4179;
-                 5.7700 6.7466 -6.9682 -4.1899 1.5741 -2.4571;
-                 -1.2722 1.6912 -3.0543 5.1092 -5.6222 3.3049];
 %% Ouvertures des c3d analogiques (EMG & Force)
     for i = 1 : length(C3dfiles)
         FileName = [folderPath C3dfiles(i).name]; 
@@ -19,9 +12,16 @@ EtalonnageForce=[15.7377 -178.4176 172.9822 7.6998 -192.7411 174.1840;
         for f = 1 : 6
             Force(i).Raw(:,f) = getfield(btkanalog, ['Voltage_' num2str(f)] );
         end
-%% Étalonnage du capteur
-% Feta= Force(i).Raw*EtalonnageForce';
-    end
-
-    
+%% Rebase
+Forcerebase = [];
+    for j =1:6
+        Force(i).rebase(:,j) = Force(i).Raw(:,j)-mean(Force(i).Raw(1:100,j));
+    end        
+%% Traitement Force pour onset|offset
+	% Fonction permettant de trouver les onset|offset avec force
+[~, ~, F_onset, F_offset] = Force_thre_output(Force(i).rebase);
+%% Variable d'exportation 
+Force(i).onsetensec = F_onset/2000;
+Force(i).offsetensec = F_offset/2000;
+    end    
 end

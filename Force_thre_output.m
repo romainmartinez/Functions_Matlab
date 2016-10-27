@@ -17,7 +17,7 @@ EtalonnageForce=[15.7377 -178.4176 172.9822 7.6998 -192.7411 174.1840;
     % Étalonnage de du capteur 
 Feta= DataForceBrut*EtalonnageForce';
 
-% Butterworth
+	% Filtre Butterworth
 [B,A]= butter(4,10/100);
 Fetafilt= filtfilt(B,A,Feta);
 
@@ -36,4 +36,3 @@ g=length(Fnorm);
 while Fnorm(g)<15; g=g-2*step; end
 while Fnorm(g)-Fnorm(g-step)>0; g=g+step; end
 end
-% 
