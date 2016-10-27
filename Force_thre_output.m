@@ -1,13 +1,20 @@
-%%%% Fonction qui traite la Force et repere les index de debut et finn
-%%%% d'application de force sur la poignï¿½e
 
-function [Fnorm, FTA, f, g] = Force_thre_output(DataForceBrut, Etalonnage)
-	% DataForceBrut = Force du capteur Nx6
-	% Etalonnage = Matrice d'étalonnage (si 6xN)
-	% Fnorm = Norm des forces filtrées
-	% FTA = Force dans les 3 axes
-	
-% ï¿½talonne les donnï¿½es brutes
+function [Fnorm, FTA, f, g] = Force_thre_output(DataForceBrut)
+% 	DataForceBrut = Force du capteur Nx6
+% 	Etalonnage    = Matrice d'étalonnage (si 6xN)
+% 	Fnorm         = Norm des forces filtrées
+% 	FTA           = Force dans les 3 axes
+
+%% Étalonnage de du capteur
+    % Matrice d'étalonnage
+EtalonnageForce=[15.7377 -178.4176 172.9822 7.6998 -192.7411 174.1840;
+                 208.3629 -109.1685 -110.3583  209.3269 -104.9032 -103.5278;
+                 227.6774 222.8613 219.1087 234.3732 217.1453 221.2831;
+                 5.6472 -0.7266 -0.3242 5.4650 -8.9705 -8.4179;
+                 5.7700 6.7466 -6.9682 -4.1899 1.5741 -2.4571;
+                 -1.2722 1.6912 -3.0543 5.1092 -5.6222 3.3049];
+
+    % Étalonnage de du capteur 
 Feta= DataForceBrut*Etalonnage';
 
 % Butterworth
