@@ -1,7 +1,7 @@
 
 function [Fnorm, FTA, f, g] = Force_thre_output(DataForceBrut)
 % 	DataForceBrut = Force du capteur Nx6
-% 	Etalonnage    = Matrice d'étalonnage (si 6xN)
+% 	Etalonnage    = Matrice d'étalonnage (si Nx6)
 % 	Fnorm         = Norm des forces filtrées
 % 	FTA           = Force dans les 3 axes
 
@@ -15,7 +15,7 @@ EtalonnageForce=[15.7377 -178.4176 172.9822 7.6998 -192.7411 174.1840;
                  -1.2722 1.6912 -3.0543 5.1092 -5.6222 3.3049];
 
     % Étalonnage de du capteur 
-Feta= DataForceBrut*Etalonnage';
+Feta= DataForceBrut*EtalonnageForce';
 
 % Butterworth
 [B,A]= butter(4,10/100);
