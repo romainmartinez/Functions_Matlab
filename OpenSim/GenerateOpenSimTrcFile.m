@@ -35,12 +35,12 @@ fprintf(fid,'\n');
 
 
     
-    for i =1:size(markers,2) %nb instants
-        for j = 1:size(markers,1) %nb markers
-            fprintf(fid,'%1.10f',markers(j,i));
-            fprintf(fid,'\t','');
-        end
-        fprintf(fid,'\n');
-    end
+%     for i =1:size(markers,2) %nb instants
+%         for j = 1:size(markers,1) %nb markers
+%             fprintf(fid,'%1.10f',markers(j,i));
+%             fprintf(fid,'\t','');
+%         end
+%         fprintf(fid,'\n');
+%     end
     
 end
