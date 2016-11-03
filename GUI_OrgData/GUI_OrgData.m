@@ -4,34 +4,10 @@
 % | |_) / _ \| '_ ` _ \ / _` | | '_ \  | |\/| |/ _` | '__| __| | '_ \ / _ \_  /  %
 % |  _ < (_) | | | | | | (_| | | | | | | |  | | (_| | |  | |_| | | | |  __// /   % 
 % |_| \_\___/|_| |_| |_|\__,_|_|_| |_| |_|  |_|\__,_|_|   \__|_|_| |_|\___/___|  %
-%                                                                                %  
-% Auteur : Romain Martinez                                 Date : Juin 2016      %
-% Description : Fonction pour générer GUI attribution des data pour a_col_assign %
-% Input : fichier c3d                                                            % 
-% Output : attribution des voies du fichier c3d                                  %                                      
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-						  
-Muscle_list = {'Delt_Ant';
-               'Delt_Med';
-               'Delt_Post';
-               'Biceps';
-               'Triceps';
-               'Trap_Up';
-               'Trap_Inf';
-               'Gd_Dent';
-               'Supra';
-               'Infra';
-               'Subscap';
-               'Pec';
-               'Gd_Dors';          
-               'Force_1';
-               'Force_2';
-               'Force_3';
-               'Force_4';
-               'Force_5';
-               'Force_6'};
-           
-index = 1
+%                                                                                %                                       
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%				  
+                   
+index = 1;
     % Figure
     S.fh = figure('units','pixels',...
                   'position',[500 500 500 500],...
@@ -50,7 +26,7 @@ index = 1
                      'units','pix',...
                      'position',[230 430 180 40],...
                      'fontsize',14,...
-                     'string',Muscle_list(index),...
+                     'string',correctlabel{index}.Text,...
                      'Callback','GUI_OrgData_Next'); 
     
     S.pc = uicontrol('style','push',...
