@@ -6,8 +6,8 @@
 % |_| \_\___/|_| |_| |_|\__,_|_|_| |_| |_|  |_|\__,_|_|   \__|_|_| |_|\___/___|  %
 %                                                                                %                                       
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%						  
-function  [oldlabel] = GUI_c3drename_Next(S,index, fields, Muscle)
-    if index < 1 | index > length(Muscle)
+
+    if index < 1 | index > length(newlabel)
         disp('Index out of range')
     else
         L  = get(S.ls,{'string','value'});
@@ -17,12 +17,11 @@ function  [oldlabel] = GUI_c3drename_Next(S,index, fields, Muscle)
         fields(current) = [];
 
         index = index+1;
-        if index > length(correctlabel)
+        if index > length(newlabel)
             disp('Assignement complete')
             close all
         else
-        set(S.pb,'string',Muscle{index}.Text);
+        set(S.pb,'string',newlabel{index}.Text);
         set(S.ls,'string',fields);
         end
     end
-end

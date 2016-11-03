@@ -6,9 +6,9 @@
 % |_| \_\___/|_| |_| |_|\__,_|_|_| |_| |_|  |_|\__,_|_|   \__|_|_| |_|\___/___|  %
 %                                                                                %                                        
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-function  [oldlabel] = GUI_c3drename_NaN(index, fields, Muscle)
+						  
 
-if index < 1 | index > length(Muscle)
+if index < 1 | index > length(newlabel)
 	disp('Index out of range')
 else
     oldlabel{1,index} = NaN;
@@ -16,13 +16,12 @@ else
     L  = get(S.ls,{'string','value'});
     
     index = index+1;
-    if index > length(Muscle)
+    if index > length(newlabel)
         disp('Assignement complete')
         close all
          else
-    set(S.pb,'string',Muscle{index}.Text);
+    set(S.pb,'string',newlabel{index}.Text);
 
     end
-end
 end
 
