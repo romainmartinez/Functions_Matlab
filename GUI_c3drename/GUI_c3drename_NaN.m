@@ -11,7 +11,7 @@
 if index < 1 | index > length(newlabel)
 	disp('Index out of range')
 else
-    oldlabel{1,index} = NaN;
+    oldlabel{1,index} = [];
     
     L  = get(S.ls,{'string','value'});
     
@@ -19,9 +19,8 @@ else
     if index > length(newlabel)
         disp('Assignement complete')
         close all
-         else
-    set(S.pb,'string',newlabel{index}.Text);
-
+    else
+        set(S.pb,'string',newlabel{index}.Text);
     end
 end
 

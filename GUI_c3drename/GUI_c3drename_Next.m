@@ -20,8 +20,11 @@
         if index > length(newlabel)
             disp('Assignement complete')
             close all
-        else
+        elseif get(S.ls,'value') == length(L{1, 1})
         set(S.pb,'string',newlabel{index}.Text);
-        set(S.ls,'string',fields);
+        set(S.ls,'string',fields, 'Value',1);
+        else 
+        set(S.pb,'string',newlabel{index}.Text);
+        set(S.ls,'string',fields);   
         end
     end
