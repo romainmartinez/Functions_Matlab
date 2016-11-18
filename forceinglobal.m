@@ -11,16 +11,17 @@ Mmat(:,7,:) = markers.boite_gauche_int';
 Mmat(:,8,:) = markers.boite_gauche_ext';
     % marqueurs de la main (dim*markers*time)
 Mmat(:,9,:) = markers.INDEX';
-Mmat(:,10,:) = markers.LASTC';
-Mmat(:,11,:) = markers.MEDH';
-Mmat(:,12,:) = markers.LATH';
+Mmat(:,10,:)= markers.LASTC';
+Mmat(:,11,:)= markers.MEDH';
+Mmat(:,12,:)= markers.LATH';
 
     % Milieu M5 M6
 M5M6 = (Mmat(:,5,:)+Mmat(:,6,:))/2;
 
     % Axes
 RT = defineAxis(Mmat(:,3,:) - Mmat(:,4,:), Mmat(:,1,:) - Mmat(:,3,:), 'xz', 'x',  M5M6);
-RT(1:3,4,:) = RT(1:3,3,:)*78.5+RT(1:3,4,:); % Translation de 78.5mm en z
+    % Translation de 78.5mm en z
+RT(1:3,4,:) = RT(1:3,3,:)*78.5+RT(1:3,4,:); 
 RT_Trans = invR(RT);
 
     if tagplot == 1
@@ -33,12 +34,12 @@ RT_Trans = invR(RT);
     
 %% Force et moment dans le global
     % matrix 6xn des voltages
-voltage(1,:) = btkanalog.Voltage_1;
-voltage(2,:) = btkanalog.Voltage_2;
-voltage(3,:) = btkanalog.Voltage_3;
-voltage(4,:) = btkanalog.Voltage_4;
-voltage(5,:) = btkanalog.Voltage_5;
-voltage(6,:) = btkanalog.Voltage_6;
+voltage(1,:) = analog.Voltage_1;
+voltage(2,:) = analog.Voltage_2;
+voltage(3,:) = analog.Voltage_3;
+voltage(4,:) = analog.Voltage_4;
+voltage(5,:) = analog.Voltage_5;
+voltage(6,:) = analog.Voltage_6;
     % Étalonnage
 matrixetal=[15.7377 -178.4176 172.9822 7.6998 -192.7411 174.1840;
                  208.3629 -109.1685 -110.3583  209.3269 -104.9032 -103.5278;
@@ -66,11 +67,15 @@ forcein0  = transpose(squeeze(forcein0));
 momentin0 = transpose(squeeze(momentin0));
 
     % Rebase force et moment
+    for j =1:3
+        forcein0(:,j)  = forcein0(:,j)  - mean(forcein0(1:100,j));
+        momentin0(:,j) = momentin0(:,j) - mean(momentin0(1:100,j));
+    end  
 
     % Interpolation pour que frame force = frame analog
-oldframe = (1:size(forcein0,1))./size(forcein0,1)*100;
-newframe = linspace(oldframe(1,1),100,length(btkanalog.Voltage_1));
-forcein0 = interp1(oldframe,forcein0,newframe,'spline');
+oldframe  = (1:size(forcein0,1))./size(forcein0,1)*100;
+newframe  = linspace(oldframe(1,1),100,length(analog.Voltage_1));
+forcein0  = interp1(oldframe,forcein0,newframe,'spline');
 momentin0 = interp1(oldframe,momentin0,newframe,'spline');
 
     % Corners qui ne servent à rien (prit au hasard)
@@ -79,4 +84,3 @@ corners =    [0    0    0;
               0    0    0;
               0    0    0];
 end
-
