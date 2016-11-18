@@ -1,4 +1,3 @@
-
 function [Fnorm, FTA, f, g] = Force_thre_output(DataForceBrut)
 % 	DataForceBrut = Force du capteur Nx6
 % 	Etalonnage    = Matrice d'étalonnage (si Nx6)
