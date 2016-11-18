@@ -1,4 +1,4 @@
-function [ forcein0, momentin0, corners ] = forceinglobal( markers, analog, tagplot)
+function [ forcein0, momentin0, corners, premier, dernier ] = forceinglobal( markers, analog, tagplot)
 %% Force
     % marqueurs de la boite (dim*markers*time)
 Mmat(:,1,:) = markers.boite_arriere_droit';
@@ -77,6 +77,20 @@ oldframe  = (1:size(forcein0,1))./size(forcein0,1)*100;
 newframe  = linspace(oldframe(1,1),100,length(analog.Voltage_1));
 forcein0  = interp1(oldframe,forcein0,newframe,'spline');
 momentin0 = interp1(oldframe,momentin0,newframe,'spline');
+
+    % Filtre Butterworth
+[B,A]    = butter(4,10/100);
+forcein0 = filtfilt(B,A,forcein0);
+momentin0 = filtfilt(B,A,momentin0);
+
+    % Norme de la force
+ Fnorm = sqrt(sum(forcein0.^2,2));
+ 
+    % Détection de la prise (>5 N)
+threshold = 5;     
+index = find(Fnorm>threshold);
+premier = index(1);
+dernier = index(end);
 
     % Corners qui ne servent à rien (prit au hasard)
 corners =    [0    0    0;
