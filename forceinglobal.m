@@ -20,6 +20,7 @@ M5M6 = (Mmat(:,5,:)+Mmat(:,6,:))/2;
 
     % Axes
 RT = defineAxis(Mmat(:,3,:) - Mmat(:,4,:), Mmat(:,1,:) - Mmat(:,3,:), 'xz', 'x',  M5M6);
+
     % Translation de 78.5mm en z
 RT(1:3,4,:) = RT(1:3,3,:)*78.5+RT(1:3,4,:); 
 RT_Trans = invR(RT);
