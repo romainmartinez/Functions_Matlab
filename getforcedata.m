@@ -42,11 +42,8 @@ for     i  = 1 : length(C3dfiles)
     forceindex{i,1} = index(1);
     forceindex{i,2} = index(end);
     forceindex{i,3} = FileName(58:end-4);
-
-clearvars FileName btkc3d btkanalog Force_Raw Force_eta Force_rebase Force_filt Force_norm index  
+    
+    clearvars FileName btkc3d btkanalog Force_Raw Force_eta Force_rebase Force_filt Force_norm index
 end
-vline([Data(trial).start Data(trial).end],{'g','r'},{'Début','Fin'})
-vline([forceindex{1,1} forceindex{1,2}],{'g','r'},{'Début','Fin'})
-Force_norm(~index) = 0;
 
 end
