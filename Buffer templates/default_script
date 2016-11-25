@@ -1,0 +1,13 @@
+%% $NAME - One line description of what the script performs
+%   Description:
+%       $NAME is used to
+%   Output:
+%       $NAME give
+%
+%   Author:  Romain Martinez
+%   email:   martinez.staps@gmail.com
+%   Website: https://github.com/romainmartinez
+%   Date:    $date; Last revision: $date
+%%
+
+clear all ; close all ; clc
