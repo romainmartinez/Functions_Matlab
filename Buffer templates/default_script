@@ -3,6 +3,8 @@
 %       $NAME is used to
 %   Output:
 %       $NAME give
+%   Functions:
+%       $NAME uses functions present in \\10.89.24.15\e\Project_IRSST_LeverCaisse\Codes\Functions_Matlab
 %
 %   Author:  Romain Martinez
 %   email:   martinez.staps@gmail.com
