@@ -10,7 +10,13 @@ for     i  = 1 : length(C3dfiles)
     FileName   = [folderPath C3dfiles(i).name];
     btkc3d     = btkReadAcquisition(FileName);
     btkanalog  = btkGetAnalogs(btkc3d);
-    
+    %% Interface pour sélectionner le nom des channels de force
+    if i == 1
+       fields   = fieldnames(btkanalog);
+       channels = {'Voltage_1','Voltage_2','Voltage_3','Voltage_4','Voltage_5','Voltage_6'};
+       [ oldlabel ] = GUI_renameforce(fields, channels)
+       
+    end
     %% Obtenir la force brute
     for f = 1 : 6
         Force_Raw(:,f) = getfield(btkanalog, ['Voltage_' num2str(f)] );
