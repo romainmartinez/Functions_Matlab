@@ -17,7 +17,7 @@ oldlabel = [];
 
 % Figure
 handles(1) = figure('units','pixels',...
-    'position',[200 500 500 500],...
+    'position',[200 200 500 500],...
     'menubar','none',...
     'numbertitle','off',...
     'resize','off');
@@ -35,27 +35,30 @@ handles(3) = uicontrol('style','push',...
     'fontsize',14,...
     'string',channel{index});
 % List 2
-handles(4) = uicontrol('style','list',... 
-    'unit','pix',... 
-    'position',[230 130 200 200],... 
-    'min',0,'max',1,... 
-    'fontsize',14); 
+handles(4) = uicontrol('style','list',...
+    'unit','pix',...
+    'position',[230 130 200 200],...
+    'min',0,'max',1,...
+    'fontsize',14);
 
 set(handles(3),'Callback',@next_callback);
 
+allParam = guidata(handles(1));
+
 allParam.index    = index;
 allParam.handles  = handles;
-allParam.field   = field;
+allParam.field    = field;
 allParam.oldlabel = oldlabel;
-allParam.channel = channel;
-set(handles(1), 'userdata', allParam);
+allParam.channel  = channel;
+
+guidata(handles(1),allParam);
 %
 end
 
 
 function next_callback(hObject,eventdata)
 
-allParam = get(gcf, 'userdata');
+allParam = guidata(hObject);
 
 if allParam.index > 6
     close all
@@ -70,22 +73,22 @@ else
     % Hide current name for the next itiration
     current = find(strcmp(allParam.field, L{1}(L{2}(:))));
     allParam.field(current) = [];
-
+    
     % Next channel
     allParam.index = allParam.index+1;
-
+    
     % Set the next fieldname to list 1
     set(allParam.handles(2),'string',allParam.field);
-
+    
     % Set the next channel to button
     set(allParam.handles(3),'string',allParam.channel{allParam.index});
     
-    % Set the next channel to list 2 
-    set(allParam.handles(4),'string',allParam.oldlabel{1,1:allParam.index}); 
+    % Set the next channel to list 2
+    initial_name=cellstr(get(allParam.handles(4),'String'));
+    set(allParam.handles(4),'string',[initial_name;allParam.oldlabel{1,allParam.index-1}] );
     
-%     allParam.oldlabel = oldlabel;
-
-    set(allParam.handles(1), 'userdata', allParam);
+    guidata(hObject,allParam);
+   
 end
 
 end
