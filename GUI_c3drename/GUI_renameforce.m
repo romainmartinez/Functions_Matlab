@@ -12,14 +12,11 @@ function [oldlabel] = GUI_renameforce(field, channel)
 %   Website: https://github.com/romainmartinez
 %   Date:    26-Nov-2016; Last revision: 28-Nov-2016
 %_____________________________________________________________________________
-
-% Variables
 index    = 1;
 oldlabel = [];
-
 % Figure
 handles(1) = figure('units','pixels',...
-    'position',[200 200 500 500],...
+    'position',[500 500 500 500],...
     'menubar','none',...
     'numbertitle','off',...
     'resize','off');
@@ -30,7 +27,6 @@ handles(2) = uicontrol('style','list',...
     'min',0,'max',1,...
     'fontsize',14,...
     'string',field);
-
 % Bouton
 handles(3) = uicontrol('style','push',...
     'units','pix',...
@@ -38,58 +34,44 @@ handles(3) = uicontrol('style','push',...
     'fontsize',14,...
     'string',channel{index});
 
-handles(4) = uicontrol('style','list',...
-    'unit','pix',...
-    'position',[230 130 200 200],...
-    'min',0,'max',1,...
-    'fontsize',14);
-
 set(handles(3),'Callback',@(event,obj)GUI_c3drename_Next(event,obj));
-
 
 allParam.index    = index;
 allParam.handles  = handles;
-allParam.field    = field;
+allParam.field   = field;
 allParam.oldlabel = oldlabel;
-allParam.channel  = channel;
-
+allParam.channel = channel;
 set(handles(1), 'userdata', allParam);
+%
 end
 
 
 function GUI_c3drename_Next(event, obj)
-
+if allParam.index > 6
+    close all
+else
+    % Get the current value
     allParam = get(gcf, 'userdata');
+    L  = get(allParam.handles(2),{'string','value'});
+
+    % Write the current value
+    allParam.oldlabel{1,allParam.index} = L{1}(L{2}(:));
+
+    % Hide current name for the next itiration
+    current = find(strcmp(allParam.field, L{1}(L{2}(:))));
+    allParam.field(current) = [];
+
+    % Next channel
+    allParam.index = allParam.index+1;
+
+    % Set the next fieldname
+    set(allParam.handles(2),'string',allParam.field);
+
+    % Set the next channel
+    set(allParam.handles(3),'string',allParam.channel{allParam.index});
     
-    if allParam.index > 6
-        close all
-    else
-        
-        % Get the current value
-        L  = get(allParam.handles(2),{'string','value'});
+%     allParam.oldlabel = oldlabel;
 
-        % Write the current value
-        allParam.oldlabel{1,allParam.index} = L{1}(L{2}(:));
-
-        % Hide current name for the next itiration
-        current = find(strcmp(allParam.field, L{1}(L{2}(:))));
-        allParam.field(current) = [];
-
-        % Next channel
-        allParam.index = allParam.index+1;
-
-        % Set the next fieldname to list 1
-        set(allParam.handles(2),'string',allParam.field);
-
-        % Set the next channel to button
-        set(allParam.handles(3),'string',allParam.channel{allParam.index});
-        
-        % Set the next channel to list 2
-        set(allParam.handles(4),'string',allParam.oldlabel{1,1:allParam.index});
-
-        % allParam.oldlabel = oldlabel;
-
-        set(allParam.handles(1), 'userdata', allParam);
-    end
-
+    set(allParam.handles(1), 'userdata', allParam);
+end
 end
