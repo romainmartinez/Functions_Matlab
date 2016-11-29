@@ -14,7 +14,7 @@ for     i  = 1 : length(C3dfiles)
     if i == 1
        fields   = fieldnames(btkanalog);
        channels = {'Voltage_1','Voltage_2','Voltage_3','Voltage_4','Voltage_5','Voltage_6'};
-       [ oldlabel ] = GUI_renameforce(fields, channels)
+       [oldlabel] = GUI_renameforce(fields, channels);
        
     end
     %% Obtenir la force brute
