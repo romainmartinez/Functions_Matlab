@@ -14,13 +14,14 @@ function [oldlabel] = GUI_renameforce(field, channel)
 %_____________________________________________________________________________
 index    = 1;
 oldlabel = [];
+
 % Figure
 handles(1) = figure('units','pixels',...
-    'position',[500 500 500 500],...
+    'position',[200 500 500 500],...
     'menubar','none',...
     'numbertitle','off',...
     'resize','off');
-% List
+% List 1
 handles(2) = uicontrol('style','list',...
     'unit','pix',...
     'position',[10 70 200 400],...
@@ -33,8 +34,14 @@ handles(3) = uicontrol('style','push',...
     'position',[230 430 180 40],...
     'fontsize',14,...
     'string',channel{index});
+% List 2
+handles(4) = uicontrol('style','list',... 
+    'unit','pix',... 
+    'position',[230 130 200 200],... 
+    'min',0,'max',1,... 
+    'fontsize',14); 
 
-set(handles(3),'Callback',@(event,obj)GUI_c3drename_Next(event,obj));
+set(handles(3),'Callback',@next_callback);
 
 allParam.index    = index;
 allParam.handles  = handles;
@@ -46,12 +53,15 @@ set(handles(1), 'userdata', allParam);
 end
 
 
-function GUI_c3drename_Next(event, obj)
+function next_callback(hObject,eventdata)
+
+allParam = get(gcf, 'userdata');
+
 if allParam.index > 6
     close all
 else
+    
     % Get the current value
-    allParam = get(gcf, 'userdata');
     L  = get(allParam.handles(2),{'string','value'});
 
     % Write the current value
@@ -64,14 +74,18 @@ else
     % Next channel
     allParam.index = allParam.index+1;
 
-    % Set the next fieldname
+    % Set the next fieldname to list 1
     set(allParam.handles(2),'string',allParam.field);
 
-    % Set the next channel
+    % Set the next channel to button
     set(allParam.handles(3),'string',allParam.channel{allParam.index});
+    
+    % Set the next channel to list 2 
+    set(allParam.handles(4),'string',allParam.oldlabel{1,1:allParam.index}); 
     
 %     allParam.oldlabel = oldlabel;
 
     set(allParam.handles(1), 'userdata', allParam);
 end
+
 end
