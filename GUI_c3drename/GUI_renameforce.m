@@ -52,7 +52,6 @@ allParam.oldlabel = oldlabel;
 allParam.channel  = channel;
 
 guidata(handles(1),allParam);
-%
 end
 
 
@@ -60,10 +59,6 @@ function next_callback(hObject,eventdata)
 
 allParam = guidata(hObject);
 
-if allParam.index > 6
-    close all
-else
-    
     % Get the current value
     L  = get(allParam.handles(2),{'string','value'});
 
@@ -76,19 +71,23 @@ else
     
     % Next channel
     allParam.index = allParam.index+1;
-    
-    % Set the next fieldname to list 1
-    set(allParam.handles(2),'string',allParam.field);
-    
-    % Set the next channel to button
-    set(allParam.handles(3),'string',allParam.channel{allParam.index});
-    
-    % Set the next channel to list 2
-    initial_name=cellstr(get(allParam.handles(4),'String'));
-    set(allParam.handles(4),'string',[initial_name;allParam.oldlabel{1,allParam.index-1}] );
-    
-    guidata(hObject,allParam);
    
-end
+    guidata(hObject,allParam);
+    
+    if allParam.index > 6
+        assignin('base', 'oldlabel', allParam.oldlabel)
+        
+        close all
+    else
+        % Set the next fieldname to list 1
+        set(allParam.handles(2),'string',allParam.field);
+
+        % Set the next channel to button
+        set(allParam.handles(3),'string',allParam.channel{allParam.index});
+
+        % Set the next channel to list 2
+        initial_name=cellstr(get(allParam.handles(4),'String'));
+        set(allParam.handles(4),'string',[initial_name;allParam.oldlabel{1,allParam.index-1}] );
+    end
 
 end
