@@ -62,7 +62,7 @@ end
     
     % Détection de la prise (>5 N)
     threshold =  5;
-    index     = find(Force_norm > threshold);
+    index     = find(Force_norm(2:end) > threshold);
     forceindex{i,1} = index(1);
     forceindex{i,2} = index(end);
     forceindex{i,3} = FileName(58:end-4);
