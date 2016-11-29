@@ -75,8 +75,7 @@ allParam = guidata(hObject);
     guidata(hObject,allParam);
     
     if allParam.index > 6
-        assignin('base', 'oldlabel', allParam.oldlabel)
-        
+        assignin('caller', 'oldlabel', allParam.oldlabel)
         close all
     else
         % Set the next fieldname to list 1
