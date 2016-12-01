@@ -28,17 +28,12 @@ for     i  = 1 : length(C3dfiles)
            fields     = fieldnames(btkanalog);
            channels   = {'Voltage_1','Voltage_2','Voltage_3','Voltage_4','Voltage_5','Voltage_6'};
            [oldlabel] = GUI_renameforce(fields, channels);
-           pause
+           pause(3)
         end
 
         %% Si il n'y a pas de channel correspondant, relance le GUI
-%         test = char(oldlabel{1,1});
-%         fields = fieldnames(btkanalog);
-%         test == 'Voie_1' strfind(fieldnames(btkanalog), 'Voltage_Voie_1')
-        %%
-        matches = strfind(fieldnames(btkanalog),oldlabel{1,1});
-%         matches2 = strfind(fieldnames(btkanalog),'Voltage_Voie_1');
-            if any(vertcat(matches{:})) %& isempty(matches2)
+%         matches  = strfind(fieldnames(btkanalog),oldlabel{1,1});
+            if sum(strcmp(fieldnames(btkanalog),oldlabel{1,1})) ~= 0
                 iter = 2;
                 break
             else
@@ -75,24 +70,21 @@ end
     % Méthode 2 (requiert image processing toolbox):
     aboveThreshold = (Force_norm > threshold);
     spanLocs       = bwlabel(aboveThreshold);                 %identify contiguous ones
-    spanLength     = regionprops(spanLocs, 'area');         %length of each span
+    spanLength     = regionprops(spanLocs, 'area');           %length of each span
     spanLength     = [ spanLength.Area];
-    goodSpans      = find(spanLength>=100);                  %get only spans of 5+ points
-    index          = find(ismember(spanLocs, goodSpans));        %indices of these spans
+    goodSpans      = find(spanLength>=1000);                   %get only spans of 5+ points
+    index          = find(ismember(spanLocs, goodSpans));     %indices of these spans
     
     % Sauvegarde des index
     forceindex{i,1} = index(1);
     forceindex{i,2} = index(end);
     forceindex{i,3} = FileName(58:end-4);
     
-    figure('unit','normalized','Position',[0 0 1 1]);
+    figure
     plot(Force_norm, 'linewidth',2)
     vline([forceindex{i,1} forceindex{i,2}],{'g','r'},{'Début','Fin'})
     title(C3dfiles(i).name)
     
     clearvars FileName btkc3d btkanalog Force_Raw Force_eta Force_rebase Force_filt Force_norm index
 end
-
-clear all ; close all ; clc;
-subject = 'geoa';
 end
