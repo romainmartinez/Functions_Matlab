@@ -91,7 +91,4 @@ for     i  = 1 : length(C3dfiles)
     
     clearvars FileName btkc3d btkanalog Force_Raw Force_eta Force_rebase Force_filt Force_norm index
 end
-
-clear all ; close all ; clc
-subject = 'arst'
 end
