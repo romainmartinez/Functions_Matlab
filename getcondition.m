@@ -5,7 +5,9 @@ for essai = 1 : length(Data)
     %% Boucle pour le poids
     if strcmp(Data(essai).trialname(2:3),'6H') == 1
         Data(essai).poids = 6;                              % 6kg
-        Data(essai).trialname(end) = [];                    % permet de retirer le caractère en trop ('_')
+        if Data(essai).trialname(end) == '_'
+            Data(essai).trialname(end) = [];
+        end% permet de retirer le caractère en trop ('_')
     elseif strcmp(Data(essai).trialname(2:4),'12H') == 1
         Data(essai).poids = 12;                             % 12kg
     elseif strcmp(Data(essai).trialname(2:4),'18H') == 1
