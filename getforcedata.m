@@ -1,4 +1,4 @@
-function [forceindex] = getforcedata(subject)
+function [forceindex] = getforcedata(subject, plotforce)
 %% Dossier des essais
 folderPath = ['\\10.89.24.15\f\Data\Shoulder\RAW\IRSST_' subject 'd\trials\'];
 
@@ -84,11 +84,12 @@ for     i  = 1 : length(C3dfiles)
     forceindex{i,2} = (index(end)*freq_camera)/freq_analog;
     forceindex{i,3} = FileName(58:end-4);
     
-    figure
-    plot(Force_norm, 'linewidth',2)
-    vline([index(1) index(end)],{'g','r'},{'Début','Fin'})
-    title(C3dfiles(i).name)
-    
+    if plotforce == 1
+        figure
+        plot(Force_norm, 'linewidth',2)
+        vline([index(1) index(end)],{'g','r'},{'Début','Fin'})
+        title(C3dfiles(i).name)
+    end
     clearvars FileName btkc3d btkanalog Force_Raw Force_eta Force_rebase Force_filt Force_norm index
 end
 end
