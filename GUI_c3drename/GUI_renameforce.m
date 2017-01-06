@@ -1,4 +1,4 @@
-function [oldlabel] = GUI_renameforce(field, channel)
+function [oldlabel, handles] = GUI_renameforce(field, channel)
 %   Description:
 %       GUI_renameforce is used get the proper analog channel for the force
 %       sensor
