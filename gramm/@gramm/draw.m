@@ -38,7 +38,7 @@ if numel(obj)>1
         set(tmp,'Visible','off','XLim',[-1 1],'YLim',[-1 1]);
         tmp=text(0,0,obj(1).bigtitle,...
             'FontWeight','bold',...
-            'Interpreter',obj(1).text_options.interpreter,...
+            'Interpreter','none',...
             'FontName',obj(1).text_options.font,...
             'FontSize',obj(1).text_options.base_size*obj(1).text_options.big_title_scaling,...
             'HorizontalAlignment','center');
@@ -534,7 +534,7 @@ for ind_row=1:length(uni_row)
                 
                 if ind_row==1
                     obj.facet_text_handles=[obj.facet_text_handles ...
-                        text('Interpreter',obj.text_options.interpreter,'String',column_string,'Rotation',0,...
+                        text('Interpreter','none','String',column_string,'Rotation',0,...
                         'Units','normalized',...
                         'Position',[0.5 1.05 2],...
                         'BackgroundColor','none',...
@@ -555,7 +555,7 @@ for ind_row=1:length(uni_row)
                 
                 if ind_column==length(uni_column)
                     obj.facet_text_handles=[obj.facet_text_handles ...
-                        text('Interpreter',obj.text_options.interpreter,'String',row_string,'Rotation',-90,...
+                        text('Interpreter','none','String',row_string,'Rotation',-90,...
                         'Units','normalized',...
                         'Position',[1.05 0.5 2],...
                         'BackgroundColor','none',...
@@ -583,7 +583,7 @@ if ~isempty(obj.title)
         set(obj.title_axe_handle,'Visible','off','XLim',[-1 1],'YLim',[-1 1]);
         obj.title_text_handle=text(0,0,obj.title,...
             'FontWeight','bold',...
-            'Interpreter',obj.text_options.interpreter,...
+            'Interpreter','none',...
             'FontName',obj.text_options.font,...
             'FontSize',obj.text_options.base_size*obj.text_options.title_scaling,...
             'HorizontalAlignment','center',...
@@ -621,7 +621,7 @@ if obj.with_legend
         obj.legend_text_handles=[obj.legend_text_handles...
             text(1,obj.legend_y,obj.aes_names.color,...
             'FontWeight','bold',...
-            'Interpreter',obj.text_options.interpreter,...
+            'Interpreter','none',...
             'FontName',obj.text_options.font,...
             'FontSize',obj.text_options.base_size*obj.text_options.legend_title_scaling,...
             'Parent',obj.legend_axe_handle)];
@@ -634,7 +634,7 @@ if obj.with_legend
                 text(2.5,obj.legend_y,num2str(uni_color{ind_color}),...
                 'FontName',obj.text_options.font,...
                 'FontSize',obj.text_options.base_size*obj.text_options.legend_scaling,...
-                'Interpreter',obj.text_options.interpreter,...
+                'Interpreter','none',...
                 'Parent',obj.legend_axe_handle)];
             obj.legend_y=obj.legend_y-legend_y_step;
         end
@@ -651,7 +651,7 @@ if obj.with_legend
         obj.legend_text_handles=[obj.legend_text_handles...
             text(1,obj.legend_y,obj.aes_names.lightness,...
             'FontWeight','bold',...
-            'Interpreter',obj.text_options.interpreter,...
+            'Interpreter','none',...
             'FontName',obj.text_options.font,...
             'FontSize',obj.text_options.base_size*obj.text_options.legend_title_scaling,...
             'Parent',obj.legend_axe_handle)];
@@ -665,7 +665,7 @@ if obj.with_legend
                 text(2.5,obj.legend_y,num2str(uni_lightness{ind_lightness}),...
                 'FontName',obj.text_options.font,...
                 'FontSize',obj.text_options.base_size*obj.text_options.legend_scaling,...
-                'Interpreter',obj.text_options.interpreter,...
+                'Interpreter','none',...
                 'Parent',obj.legend_axe_handle)];
             
             obj.legend_y=obj.legend_y-legend_y_step;
@@ -679,7 +679,7 @@ if obj.with_legend
         obj.legend_text_handles=[obj.legend_text_handles...
             text(1,obj.legend_y,obj.aes_names.color,...
             'FontWeight','bold',...
-            'Interpreter',obj.text_options.interpreter,...
+            'Interpreter','none',...
             'FontName',obj.text_options.font,...
             'FontSize',obj.text_options.base_size*obj.text_options.legend_title_scaling,...
             'Parent',obj.legend_axe_handle)];
@@ -734,7 +734,7 @@ if obj.with_legend
         obj.legend_text_handles=[obj.legend_text_handles...
             text(1,obj.legend_y,obj.aes_names.marker,...
             'FontWeight','bold',...
-            'Interpreter',obj.text_options.interpreter,...
+            'Interpreter','none',...
             'FontName',obj.text_options.font,...
             'FontSize',obj.text_options.base_size*obj.text_options.legend_title_scaling,...
             'Parent',obj.legend_axe_handle)];
@@ -745,7 +745,7 @@ if obj.with_legend
             
             obj.legend_text_handles=[obj.legend_text_handles...
                 text(2.5,obj.legend_y,num2str(uni_marker{ind_marker}),...
-                'Interpreter',obj.text_options.interpreter,...
+                'Interpreter','none',...
                 'FontName',obj.text_options.font,...
                 'FontSize',obj.text_options.base_size*obj.text_options.legend_scaling,...
                 'Parent',obj.legend_axe_handle)];
@@ -761,7 +761,7 @@ if obj.with_legend
         obj.legend_text_handles=[obj.legend_text_handles...
             text(1,obj.legend_y,obj.aes_names.linestyle,...
             'FontWeight','bold',...
-            'Interpreter',obj.text_options.interpreter,...
+            'Interpreter','none',...
             'FontName',obj.text_options.font,...
             'FontSize',obj.text_options.base_size*obj.text_options.legend_title_scaling,...
             'Parent',obj.legend_axe_handle)];
@@ -772,7 +772,7 @@ if obj.with_legend
             
             obj.legend_text_handles=[obj.legend_text_handles...
                 text(2.5,obj.legend_y,num2str(uni_linestyle{ind_linestyle}),...
-                'Interpreter',obj.text_options.interpreter,...
+                'Interpreter','none',...
                 'FontName',obj.text_options.font,...
                 'FontSize',obj.text_options.base_size*obj.text_options.legend_scaling,...
                 'Parent',obj.legend_axe_handle)];
@@ -788,7 +788,7 @@ if obj.with_legend
         obj.legend_text_handles=[obj.legend_text_handles...
             text(1,obj.legend_y,obj.aes_names.size,...
             'FontWeight','bold',...
-            'Interpreter',obj.text_options.interpreter,...
+            'Interpreter','none',...
             'FontName',obj.text_options.font,...
             'FontSize',obj.text_options.base_size*obj.text_options.legend_title_scaling,...
             'Parent',obj.legend_axe_handle)];
@@ -815,7 +815,7 @@ if obj.with_legend
             
             obj.legend_text_handles=[obj.legend_text_handles...
                 text(2.5,obj.legend_y,num2str(uni_size{ind_size}),...
-                'Interpreter',obj.text_options.interpreter,...
+                'Interpreter','none',...
                 'FontName',obj.text_options.font,...
                 'FontSize',obj.text_options.base_size*obj.text_options.legend_scaling,...
                 'Parent',obj.legend_axe_handle)];
@@ -878,7 +878,7 @@ for ind_row=1:length(uni_row) %Loop over rows
             %Set axes limits logic according to facet_scale and
             %wrapping. Also set up corresponding axis linking, using tip from
             % http://undocumentedmatlab.com/blog/using-linkaxes-vs-linkprop#more-5928
-            if (obj.wrap_ncols>0) %in the facet_wrap case
+            if (obj.wrap_ncols>0)
                 switch obj.facet_scale
                     case 'fixed'
                         temp_xscale='global';
@@ -887,7 +887,7 @@ for ind_row=1:length(uni_row) %Loop over rows
                         
                         %Both XLims and YLims are linked across
                         %all plots
-                        if ind_row==1 && ind_column==1 %We only do the linking once for all plots facets
+                        if ind_row==1 && ind_column==1
                             obj.extra.YLim_listeners=linkprop(obj.facet_axes_handles(:),'YLim');
                             obj.extra.XLim_listeners=linkprop(obj.facet_axes_handles(:),'XLim');
                             obj.extra.ZLim_listeners=linkprop(obj.facet_axes_handles(:),'ZLim');
@@ -897,7 +897,7 @@ for ind_row=1:length(uni_row) %Loop over rows
                         temp_yscale='global';
                         temp_zscale='global';
                         
-                        %YLims are linked across all plots
+                        %XLims are linked across all plots
                         if ind_row==1 && ind_column==1
                             obj.extra.YLim_listeners=linkprop(obj.facet_axes_handles(:),'YLim');
                         end
@@ -906,7 +906,7 @@ for ind_row=1:length(uni_row) %Loop over rows
                         temp_yscale='per_plot';
                         temp_zscale='global';
                         
-                        %XLims are linked across all plots
+                        %YLims are linked across all plots
                         if ind_row==1 && ind_column==1
                             obj.extra.XLim_listeners=linkprop(obj.facet_axes_handles(:),'XLim');
                         end
@@ -919,7 +919,7 @@ for ind_row=1:length(uni_row) %Loop over rows
                         temp_yscale='per_plot';
                         temp_zscale='per_plot';
                 end
-            else %In the facet_grid case
+            else
                 switch obj.facet_scale
                     case 'fixed'
                         temp_xscale='global';
@@ -939,20 +939,12 @@ for ind_row=1:length(uni_row) %Loop over rows
                         temp_zscale='global';
                         
                         %YLims are linked across all plots,
+                        %XLims are linked within columns
                         if ind_row==1 && ind_column==1
                             obj.extra.YLim_listeners=linkprop(obj.facet_axes_handles(:),'YLim');
                         end
-                        if obj.is_flipped
-                            %For flipped axes, we link XLims within rows
-                            if ind_column==1
-                                obj.extra.XLim_listeners(ind_row)=linkprop(obj.facet_axes_handles(ind_row,:),'XLim');
-                            end
-                        else
-                            %XLims are linked within columns for
-                            %non-flipped axes
-                            if ind_row==1
-                                obj.extra.XLim_listeners(ind_column)=linkprop(obj.facet_axes_handles(:,ind_column),'XLim');
-                            end
+                        if ind_row==1
+                            obj.extra.XLim_listeners(ind_column)=linkprop(obj.facet_axes_handles(:,ind_column),'XLim');
                         end
                     case 'free_y'
                         temp_xscale='global';
@@ -960,45 +952,24 @@ for ind_row=1:length(uni_row) %Loop over rows
                         temp_zscale='global';
                         
                         %XLims are linked across all plots,
+                        %YLims are linked within rows
                         if ind_row==1 && ind_column==1
                             obj.extra.XLim_listeners=linkprop(obj.facet_axes_handles(:),'XLim');
                         end
-                        if obj.is_flipped
-                            %For flipped axes, we link YLims within columns
-                            if ind_row==1
-                                obj.extra.YLim_listeners(ind_column)=linkprop(obj.facet_axes_handles(ind_column,:),'YLim');
-                            end
-                        else
-                            %YLims are linked within rows for non-flipped
-                            %axes
-                            if ind_column==1
-                                obj.extra.YLim_listeners(ind_row)=linkprop(obj.facet_axes_handles(ind_row,:),'YLim');
-                            end
+                        if ind_column==1
+                            obj.extra.YLim_listeners(ind_row)=linkprop(obj.facet_axes_handles(ind_row,:),'YLim');
                         end
                     case 'free'
                         temp_xscale='per_column';
                         temp_yscale='per_row';
                         
-                        if obj.is_flipped
-                            %Flipped case
-                            %XLims are linked within rows
-                            %YLims are linked within columns
-                            if ind_row==1
-                                obj.extra.YLim_listeners(ind_column)=linkprop(obj.facet_axes_handles(:,ind_column),'YLim');
-                            end
-                            if ind_column==1
-                                obj.extra.XLim_listeners(ind_row)=linkprop(obj.facet_axes_handles(ind_row,:),'XLim');
-                            end
-                        else
-                            %Non flipped case
-                            %XLims are linked within columns
-                            %YLims are linked within rows
-                            if ind_row==1
-                                obj.extra.XLim_listeners(ind_column)=linkprop(obj.facet_axes_handles(:,ind_column),'XLim');
-                            end
-                            if ind_column==1
-                                obj.extra.YLim_listeners(ind_row)=linkprop(obj.facet_axes_handles(ind_row,:),'YLim');
-                            end
+                        %XLims are linked within columns
+                        %YLims are linked within rows
+                        if ind_row==1
+                            obj.extra.XLim_listeners(ind_column)=linkprop(obj.facet_axes_handles(:,ind_column),'XLim');
+                        end
+                        if ind_column==1
+                            obj.extra.YLim_listeners(ind_row)=linkprop(obj.facet_axes_handles(ind_row,:),'YLim');
                         end
                     case 'independent'
                         temp_xscale='per_plot';
@@ -1015,11 +986,7 @@ for ind_row=1:length(uni_row) %Loop over rows
                 case 'global'
                     temp_xlim=[min(min(obj.plot_lim.minx(:,:))) max(max(obj.plot_lim.maxx(:,:)))];
                 case 'per_column'
-                    if obj.is_flipped
-                        temp_xlim=[min(obj.plot_lim.minx(ind_row,:)) max(obj.plot_lim.maxx(ind_row,:))];
-                    else
-                        temp_xlim=[min(obj.plot_lim.minx(:,ind_column)) max(obj.plot_lim.maxx(:,ind_column))];
-                    end
+                    temp_xlim=[min(obj.plot_lim.minx(:,ind_column)) max(obj.plot_lim.maxx(:,ind_column))];
                 case 'per_plot'
                     temp_xlim=[obj.plot_lim.minx(ind_row,ind_column) obj.plot_lim.maxx(ind_row,ind_column)];
             end
@@ -1031,26 +998,13 @@ for ind_row=1:length(uni_row) %Loop over rows
                 case 'global'
                     temp_ylim=[min(min(obj.plot_lim.miny(:,:))) max(max(obj.plot_lim.maxy(:,:)))];
                 case 'per_row'
-                    if obj.is_flipped
-                        temp_ylim=[min(obj.plot_lim.miny(:,ind_column)) max(obj.plot_lim.maxy(:,ind_column))];
-                    else
-                        temp_ylim=[min(obj.plot_lim.miny(ind_row,:)) max(obj.plot_lim.maxy(ind_row,:))];
-                    end
+                    temp_ylim=[min(obj.plot_lim.miny(ind_row,:)) max(obj.plot_lim.maxy(ind_row,:))];
                 case 'per_plot'
                     temp_ylim=[obj.plot_lim.miny(ind_row,ind_column) obj.plot_lim.maxy(ind_row,ind_column)];
             end
             if sum(isnan(temp_ylim))==0
                 set(ca,'YLim',temp_ylim+[-diff(temp_ylim)*obj.ylim_extra(1) diff(temp_ylim)*obj.ylim_extra(2)]);
             end
-            
-            %Is the axis at interesting locations for ticks/labels?
-            on_left=(obj.wrap_ncols==-1 && ind_column==1) || ... %Or if we're in facet grid mode and are in the first column
-                    (obj.wrap_ncols>0 && mod(ind_column,obj.wrap_ncols)==1) || ... %Or if we are in facet wrap mode and are in the first "column"
-                    (obj.wrap_ncols==1 && ind_column==1); %Special case for single facet in facet_wrap mode
-                    
-            on_bottom=(obj.wrap_ncols==-1 && ind_row==length(uni_row)) || ... %Or if we're in facet grid mode and we are in the last row
-                    (obj.wrap_ncols>0 && (length(uni_column)-ind_column)<obj.wrap_ncols); %Or if we are in facet wrap mode and we are in the last facet on the "column"
-                    
             
             if ~isempty(temp_aes.z) %Only do the Z limit stuff if we have z data
                 
@@ -1070,19 +1024,15 @@ for ind_row=1:length(uni_row) %Loop over rows
                 
                 %Set up logic of plot ticks presence
                 has_xtick=obj.force_ticks || ... %Plot has xticks if forced
-                    on_bottom ||...
+                    (obj.wrap_ncols==-1 && ind_row==length(uni_row)) || ... %Or if we're in facet grid mode and we are in the last row
+                    (obj.wrap_ncols>0 && (length(uni_column)-ind_column)<obj.wrap_ncols) ||... %Or if we are in facet wrap mode and we are in the last facet on the "column"
                     strcmp(temp_xscale,'per_plot'); %Or if we were in a per-plot scale mode
                 
                 has_ytick=obj.force_ticks || ... %Plot has xticks if forced
-                    on_left || ... %Special case for single facet in facet_wrap mode
+                    (obj.wrap_ncols==-1 && ind_column==1) || ... %Or if we're in facet grid mode and are in the first column
+                    (obj.wrap_ncols>0 && mod(ind_column,obj.wrap_ncols)==1) || ... %Or if we are in facet wrap mode and are in the first "column"
+                    (obj.wrap_ncols==1 && ind_column==1) || ... %Special case for single facet in facet_wrap mode
                     strcmp(temp_yscale,'per_plot'); %Or if we were in a per-plot scale mode
-            end
-            
-            %flip tick presence if coordinates are flipped
-            if obj.is_flipped
-                tmp=has_ytick;
-                has_ytick=has_xtick;
-                has_xtick=tmp;
             end
             
             %Remove ticks if necessary
@@ -1109,24 +1059,22 @@ for ind_row=1:length(uni_row) %Loop over rows
             end
             
             %Add axes labels on right and botttom graphs only
-            if (~obj.is_flipped && on_left) || ~isempty(temp_aes.z) || ...
-               (obj.is_flipped && on_bottom)   %If coord flipped do it the other way around (y like x)
+            if ind_column==1 || (obj.wrap_ncols>0 && mod(ind_column,obj.wrap_ncols)==1) || ~isempty(temp_aes.z)
                 ylabel(ca,obj.aes_names.y,...
-                    'Interpreter',obj.text_options.interpreter,...
+                    'Interpreter','none',...
                     'FontName',obj.text_options.font,...
                     'FontSize',obj.text_options.base_size*obj.text_options.label_scaling); %,'Units','normalized','position',[-0.2 0.5 1]
             end
-            if (~obj.is_flipped && on_bottom) || ~isempty(temp_aes.z) ||...
-                (obj.is_flipped && on_left) %If coord flipped do it the other way around (x like y)
+            if (ind_row==length(uni_row) && obj.wrap_ncols<=0) || (obj.wrap_ncols>0 && (length(uni_column)-ind_column)<obj.wrap_ncols) || ~isempty(temp_aes.z)
                 xlabel(ca,obj.aes_names.x,...
-                    'Interpreter',obj.text_options.interpreter,...
+                    'Interpreter','none',...
                     'FontName',obj.text_options.font,...
                     'FontSize',obj.text_options.base_size*obj.text_options.label_scaling)
             end
             %If we have z data
             if ~isempty(temp_aes.z)
                 zlabel(ca,obj.aes_names.z,...
-                    'Interpreter',obj.text_options.interpreter,...
+                    'Interpreter','none',...
                     'FontName',obj.text_options.font,...
                     'FontSize',obj.text_options.base_size*obj.text_options.label_scaling) %Add z label
                 view(ca,3); %Reset the view so that it is a 3D view
@@ -1189,7 +1137,7 @@ for ind_row=1:length(uni_row) %Loop over rows
                             %hline
                             plot(xl,[obj.abline.yintercept(line_ind) obj.abline.yintercept(line_ind)],obj.abline.style{line_ind},'Parent',ca);
                         else
-                            temp_x=linspace(xl(1),xl(2),500);
+                            temp_x=linspace(xl(1),xl(2),100);
                             plot(temp_x,obj.abline.fun{line_ind}(temp_x),obj.abline.style{line_ind},'Parent',ca);
                         end
                     end
@@ -1248,9 +1196,6 @@ function out=allmax(in)
 %Return maximum of an array or of a cell of arrays
 if iscell(in)
     out=max(cellfun(@max,in(~cellfun(@isempty,in)))); %Cellfun on non empty cells
-    if isempty(out)
-        out=NaN;
-    end
 else
     out=max(in);
 end
@@ -1260,9 +1205,6 @@ function out=allmin(in)
 %Return minimum of an array or of a cell of arrays
 if iscell(in)
     out=min(cellfun(@min,in(~cellfun(@isempty,in))));  %Cellfun on non empty cells
-    if isempty(out)
-        out=NaN;
-    end
 else
     out=min(in);
 end

@@ -39,8 +39,6 @@ classdef gramm < matlab.mixin.Copyable
         polar=struct('is_polar',false,...
             'is_polar_closed',false)
         
-        is_flipped=false; %Are the axes flipped?
-        
         x_factor %Is X a categorical variable ?
         x_ticks %Store the ticks used for x
         
@@ -185,7 +183,6 @@ classdef gramm < matlab.mixin.Copyable
         
         obj=redraw(obj,spacing,display)
         obj=draw(obj,do_redraw)
-		obj=export(obj,varargin)
            
         % Customization methods
         obj=set_polar(obj,varargin)

@@ -150,7 +150,7 @@ if iscell(draw_data.x) || iscell(draw_data.y) %If input was provided as cell/mat
         uni_x=nanmean(x);
         %Add a check for X alignment
         x_diff=max(x)-min(x);
-        if  size(x,1)>1 && any(x_diff(1:end-1)>diff(uni_x)/10) %More than a tenth of delta x variation
+        if any(x_diff(1:end-1)>diff(uni_x)/10) %More than a tenth of delta x variation
             warning(['some repeated X values are misaligned (max ' num2str(max(x_diff)) '), use ''interp_in'' in stat_summary() or live with the consequences'])
         end
     end
@@ -159,7 +159,7 @@ if iscell(draw_data.x) || iscell(draw_data.y) %If input was provided as cell/mat
         warning('bin_in in stat_summary() not supported for Matrix/Cell X/Y inputs');
     end
     
-    if ischar(params.type) && ~isempty(strfind(params.type,'fit'))
+    if strfind(params.type,'fit')
         %If we have a params.type using distributions fits we
         %can't vectorize the call to computeci so we do it in a for
         %loop
@@ -343,19 +343,6 @@ end
 if nsamp<2
     disp('Less than 2 samples for CI computation...Skipping')
     yci=repmat([NaN NaN],size(y,2));
-    return;
-end
-
-if isa(type,'function_handle')
-    try
-        temp=type(y);
-        ymean=temp(1,:);
-        yci=temp(2:3,:);
-    catch ME
-        disp(['Error in custom summary computation: ' ME.message ' ...skipping']);
-        yci=repmat([NaN NaN],size(y,2));
-        ymean=nan(size(y,2),1);
-    end
     return;
 end
 
