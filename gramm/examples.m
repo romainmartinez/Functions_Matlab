@@ -101,7 +101,9 @@ g.draw();
 %
 % Here we also use an array of gramm objects in order to have multiple gramm plots
 % on the same figure. The gramm objects use the same data, so  we copy them after construction using the
-% |copy()| method
+% |copy()| method. We also duplicate the whole array of gramm objects
+% before drawing in order to demonstrate the use of coord_flip() to
+% exchange X and Y axes
 
 clear g
 
@@ -135,8 +137,15 @@ g(2,2).set_title('stat_violin()');
 g.set_names('x','Origin','y','Horsepower','color','# Cyl');
 g.set_title('Visualization of Y~X relationships with X as categorical variable');
 
+gf = copy(g);
+
 figure('Position',[100 100 800 550]);
 g.draw();
+
+gf.set_title('Visualization of Y~X relationships with X as categorical variable and flipped coordinates');
+figure('Position',[100 100 800 550]);
+gf.coord_flip();
+gf.draw();
 
 
 %% Methods for visualizing X densities
@@ -218,7 +227,7 @@ g(2,3).geom_point();
 g(2,3).stat_cornerhist('edges',-4:0.2:4,'aspect',0.6);
 g(2,3).geom_abline();
 g(2,3).set_title('stat_cornerhist()');
-g(2,3).set_names('x','z(Horsepower)','y','-z(Acceleration)')
+g(2,3).set_names('x','z(Horsepower)','y','-z(Acceleration)');
 
 g.set_title('Visualization of Y~X relationship with both X and Y as continuous variables');
 figure('Position',[100 100 800 550]);
@@ -325,7 +334,7 @@ g.draw();
 % trajectories. Here for example we generate 50 trajectories, each of
 % length 40. The grouping data is then given per trajectory and not per
 % data point. Here the color grouping variable is thus given as a 1x50
-% cellstr.
+    % cellstr.
 
 %We generate 50 trajectories of length 40, with 3 groups
 N=50;
@@ -349,6 +358,7 @@ g(1,2).geom_line();
 g(1,2).set_title('geom_line()');
 
 g(2,1).stat_smooth();
+g(2,1).set_point_options('base_size',3);
 g(2,1).set_title('stat_smooth()');
 
 
@@ -470,11 +480,17 @@ g(3,2).set_title('facet_grid(''scale'',''independent'')');
 g.set_color_options('lightness_range',[40 80],'chroma_range',[80 40]);
 g.set_names('column','','row','');
 %g.axe_property('color',[0.9 0.9 0.9],'XGrid','on','YGrid','on','GridColor',[1 1 1],'GridAlpha',0.8,'TickLength',[0 0],'XColor',[0.3 0.3 0.3],'YColor',[0.3 0.3 0.3])
-g.set_title('facet_grid() options');
+
+gf = copy(g);
 
 figure('Position',[100 100 800 800]);
+g.set_title('facet_grid() options');
 g.draw();
 
+figure('Position',[100 100 800 800]);
+gf.set_title({'facet_grid() options' 'work together with coord_flip()'});
+gf.coord_flip();
+gf.draw();
 
 
 
@@ -641,7 +657,6 @@ g.draw();
 plot(g.results.stat_cornerhist(2).child_axe_handle,[-2 -2],[0 50],'k:','LineWidth',2)
 %set([g.results.stat_cornerhist.child_axe_handle],'XTick',[])
 
-
 %% Graphic and normalization options in stat_violin()
 
 clear g
@@ -784,7 +799,7 @@ g(1,1)=gramm('x',cars_table.Horsepower,'y',cars_table.Acceleration,...
 g.geom_label('VerticalAlignment','middle','HorizontalAlignment','center','BackgroundColor','auto','Color','k');
 g.set_limit_extra([0.2 0.2],[0.1 0.1]);
 g.set_names('color','Manufacturer','x','Horsepower','y','Acceleration');
-g.set_color_options('map','brewer2')
+g.set_color_options('map','brewer2');
 g.draw();
 
 
@@ -798,6 +813,48 @@ g.geom_bar('dodge',0.7,'width',0.6);
 g.geom_label('color','k','dodge',0.7,'VerticalAlignment','bottom','HorizontalAlignment','center');
 g.set_names('color','Origin','x','Year','y','Number of models');
 g.draw();
+
+%% Smooth continuous data with stat_smooth()
+
+x=0:0.02:9.8;
+y=sin(exp(x-5)/12);
+y(x<2)=y(x<2)+randn(1,sum(x<2))/2;
+y(x>=2)=y(x>=2)+randn(1,sum(x>=2))/8;
+
+figure('Position',[100 100 800 500]);
+clear g
+g=gramm('x',x,'y',y);
+g.geom_funline('fun',@(x)sin(exp(x-5)/12));
+g.geom_vline('xintercept',2)
+g.axe_property('XLim',[0 9.8]);
+g(1,2)=copy(g(1));
+g(1,3)=copy(g(1));
+g(2,1)=copy(g(1));
+g(2,2)=copy(g(1));
+g(2,3)=copy(g(1));
+g(1,1).geom_point();
+g(1,1).set_title('Raw input');
+
+g(1,2).stat_smooth();
+g(1,2).set_title('stat_smooth() default');
+
+g(1,3).stat_smooth('lambda','auto','npoints',500);
+g(1,3).set_title('default with ''lambda'',''auto''');
+
+g(2,1).stat_smooth('method','sgolay','lambda',[31 3]);
+g(2,1).set_title('''method'',''sgolay''');
+
+g(2,2).stat_smooth('method','moving','lambda',31);
+g(2,2).set_title('''method'',''moving''');
+
+
+g(2,3).stat_smooth('method','loess','lambda',0.1);
+g(2,3).set_title('''method'',''loess''');
+
+g.set_title('Options for stat_smooth()');
+g.draw();
+
+
 
 %% Superimposing gramm plots with update(): Using different groups for different stat_ and geom_ methods
 % By using the method update() after a first draw() call of a gramm object,
@@ -992,12 +1049,13 @@ g(2,1).set_title('x in input order');
 %directly providing the desired order.
 g(2,2)=gramm('x',x,'y',y,'lightness',x);
 g(2,2).stat_summary('geom','bar','dodge',0);
-g(2,2).set_order_options('x',0,'lightness',{'XS' 'S' 'M' 'L' 'XL' 'XXL'});
+%g(2,2).set_order_options('x',0,'lightness',{'XS' 'S' 'M' 'L' 'XL' 'XXL'});
 g(2,2).set_title({'x in input order' 'lightness in custom order'});
-%Examples below properly fail
-%g(2,2).set_order_options('x',0,'lightness',{'XXL' 'XL' 'L' 'M' 'S' 'B'})
+%Examples below do not fail but might truncate data 
+g(2,2).set_order_options('x',0,'lightness',{'XXL' 'XL' 'L' 'B' 'M' 'S' 'XS' }); %additional category is ignored
+%g(2,2).set_order_options('x',0,'lightness',{'XXL' 'XL' 'L' 'M' 'XS'}) %Missing category is truncated
+%Examples below fail due to type problems
 %g(2,2).set_order_options('x',0,'lightness',{'XXL' 'XL' 'L' 'M' 'S' 1})
-%g(2,2).set_order_options('x',0,'lightness',{'XXL' 'XL' 'L' 'M' 'S'})
 
 %It is also possible to set up a custom order (indices within the sorted
 %input), here used to inverse lightness map. This way is a bit more
@@ -1007,7 +1065,7 @@ g(2,3)=gramm('x',x,'y',y,'lightness',x);
 g(2,3).stat_summary('geom','bar','dodge',0);
 g(2,3).set_order_options('x',0,'lightness',[6 4 1 2 3 5]);
 g(2,3).set_title({'x in input order' 'lightness in custom order'});
-%Exampel below properly fail
+%Example below properly fail
 %g(2,3).set_order_options('x',0,'lightness',[6 4 1 2 3 3])
 
 g.set_names('x','US size','y','EU size','lightness','US size');
@@ -1048,6 +1106,45 @@ g(2,2).set_point_options('use_input',true,'input_fun',@(s)5+s*2);
 g(2,2).set_title('Size according to value');
 
 g.set_title('Customization of line and point options');
+
+figure('Position',[100 100 800 600]);
+g.draw();
+
+%% Decorate plot backgrounds with geom_polygon()
+
+clear g
+g=gramm('x',cars.Model_Year,'y',cars.MPG,'color',cars.Cylinders,'subset',cars.Cylinders~=3 & cars.Cylinders~=5);
+g.facet_grid([],cars.Origin_Region);
+g.geom_point();
+g.stat_glm('geom','line');
+g.set_names('column','','x','Year of production','y','Fuel economy (MPG)','color','# Cylinders');
+
+g(1,2)=copy(g(1));
+g(2,1)=copy(g(1));
+g(2,2)=copy(g(1));
+
+% Color mapping for the polygons
+cmap = [1   0.5 0.5; % red (bad gas mileage)
+        1   1   0.5; % yellow (reasonable gas mileage)
+        0.5 1   0.5]; % green (good gas mileage)
+
+% Standard geom_polygon call, 'x' and 'y' are used to provide polygons vertex coordinates, Possibility to manually set fill, color, style and alpha.
+g(1,1).geom_polygon('x',{[50 90 90 50] ; [50 90 90 50] ; [50 90 90 50]},'y',{[5 5 20 20];  [20 20 30 30];  [30 30 50 50]},'color',cmap,'alpha',0.3);
+
+% Simplified geom_polygon call, 'x' was omitted and only pairs of 'y' values are provided,
+% specifying lower and upper limits of horizontal areas.
+g(1,2).geom_polygon('y',{[5 20];  [20 30];  [30 50]},'color',cmap);
+
+%Possibility to set color and fill by indices (using a column vector of
+%integers. Colormap generated between 1 and max(vector))
+g(2,1).geom_polygon('y',{[5 20];  [20 30];  [30 50]},'color',[1 ; 3;  2]);
+
+% Single fill, alpha, color and styles are automatically extended to all polygons in the call
+g(2,2).geom_polygon('y',{[5 20];  [30 50]},'color',[1 0 0],'line_style',{'--'},'line_color',[0 0 0.5]);
+% Possibility to do multiple calls
+g(2,2).geom_polygon('x',{[72 80 76]},'y',{[22 22 28]}); %Default is grey
+
+g.set_title('Decorate plot backgrounds with geom_polygon()');
 
 figure('Position',[100 100 800 600]);
 g.draw();
