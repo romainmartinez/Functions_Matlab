@@ -64,7 +64,7 @@ Temporary Items
 slprj/
 
 # gramm repo
-gramm/
+gramm/*
 
 # spm1d repo
-spm1dmatlab
+spm1dmatlab/*
