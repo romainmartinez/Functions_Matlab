@@ -1,22 +1,35 @@
-function output = describe(input)
-top = {'mean', 'median', 'Q1', 'Q3', 'range', 'variance', 'std'};
+function output = describe(data, varargin)
+
+%%%%%%%
+% Create an InputParser
+p = inputParser;
+
+p.addRequired('data');
+p.addOptional('id',num2cell(1:size(data,2)));
+% p.addParameter('title','Default title');
+
+
+p.parse(data,varargin{:})
+inputs = p.Results;
+%%%%%%%
+
 
 % I) central tendency characteristics
 % a) mean
-output(1,:) = mean(input);
+output(1,:) = mean(inputs.data);
 % b) median
-output(2,:) = median(input);
+output(2,:) = median(inputs.data);
 % c) first and third quantiles
-output(3,:) = quantile(input, .25);
-output(4,:) = quantile(input, .75);
+output(3,:) = quantile(inputs.data, .25);
+output(4,:) = quantile(inputs.data, .75);
 
 % II) dispersion characteristics
 % a) range
-output(5,:) = max(input) - min(input);
+output(5,:) = max(inputs.data) - min(inputs.data);
 % b) variance
-output(6,:) = var(input);
+output(6,:) = var(inputs.data);
 % c) standard deviation
-output(7,:) = std(input);
+output(7,:) = std(inputs.data);
 % round to 2 digits
 output = round(output, 2);
 
