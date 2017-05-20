@@ -1,4 +1,4 @@
-classdef describe2 < handle
+classdef describe < handle
     
     properties
         inputs
@@ -6,7 +6,7 @@ classdef describe2 < handle
     
     methods
         
-        function obj = describe2(data, varargin)
+        function obj = describe(data, varargin)
             p = inputParser;
             
             p.addRequired('data', @isnumeric);
