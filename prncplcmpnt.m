@@ -90,8 +90,8 @@ classdef prncplcmpnt < handle
             g = uix.Grid('Parent', f, 'Spacing', 5);
             
             % 1) CP1-CP2 factorial plane
-            cp.plot = uix.Panel('Parent', g, 'Title', 'CP1-CP2 factorial plane', 'Padding', 5);
-            axes('Parent', cp.plot)
+            panel{1} = uix.BoxPanel('Parent', g, 'Title', 'CP1-CP2 factorial plane', 'Padding', 5);
+            axes('Parent', panel{1})
             scatter(obj.x.score(:,1), obj.x.score(:,2), 'filled', 'b^')
             text(obj.x.score(:,1), obj.x.score(:,2),...
                 obj.inputs.id,...
@@ -101,8 +101,8 @@ classdef prncplcmpnt < handle
             ylabel('Factor 2 : CP2')
             
             % 2) correlation circle
-            crr.plot = uix.Panel('Parent', g, 'Title', 'correlation circle', 'Padding', 5);
-            axes('Parent', crr.plot)
+            panel{2} = uix.BoxPanel('Parent', g, 'Title', 'correlation circle', 'Padding', 5);
+            axes('Parent', panel{2})
             quiver(zeros(size(obj.x.coeff, 1),1), zeros(size(obj.x.coeff, 1),1),...
                 obj.x.coeff(:,1), obj.x.coeff(:,2))
             text(obj.x.coeff(:,1), obj.x.coeff(:,2), obj.inputs.vars,...
@@ -115,25 +115,68 @@ classdef prncplcmpnt < handle
             
             % 3) biplot correlation (coeff, score)
             % variables-individus superposition
-            bi.corr = uix.Panel('Parent', g, 'Title', 'biplot correlation', 'Padding', 5);
-            axes('Parent', bi.corr)
+            panel{3} = uix.BoxPanel('Parent', g, 'Title', 'biplot correlation', 'Padding', 5);
+            axes('Parent', panel{3})
             biplot(obj.x.coeff(:,1:2), 'scores', obj.x.score(:,1:2),...
                 'varlabels', obj.inputs.vars,...
                 'linewidth', 2)
             
             % 4) biplot distance (score, coeff)
             % variables-individus superposition
-            bi.dist = uix.Panel('Parent', g, 'Title', 'biplot distance', 'Padding', 5);
-            axes('Parent', bi.dist, 'ActivePositionProperty', 'outerposition')
+            panel{4} = uix.BoxPanel('Parent', g, 'Title', 'biplot distance', 'Padding', 5);
+            axes('Parent', panel{4}, 'ActivePositionProperty', 'outerposition')
             biplot(obj.x.score(:,1:2), 'scores', obj.x.coeff(:,1:2),...
                 'varlabels', obj.inputs.id,...
                 'linewidth', 2)
             
             set(g, 'Heights', [-1 -1]);
             
-            %%%
+            set(panel{1}, 'DockFcn', {@nDock, 1});
+            set(panel{2}, 'DockFcn', {@nDock, 2});
+            set(panel{3}, 'DockFcn', {@nDock, 3});
+            set(panel{4}, 'DockFcn', {@nDock, 4});
             
-%             set(cp.plot, 'DockFcn', {@nDock, 1} );
+            %-------------------------------------------------------------------------%
+            
+            function nDock(eventSource, eventData, whichpanel) %#ok<INUSL>
+                % Set the flag
+                panel{whichpanel}.Docked = ~panel{whichpanel}.Docked;
+                if panel{whichpanel}.Docked
+                    % Put it back into the layout
+                    newfig = get(panel{whichpanel}, 'Parent');
+                    set(panel{whichpanel}, 'Parent', g);
+                    delete(newfig);
+                else
+                    % Take it out of the layout
+                    pos = getpixelposition(panel{whichpanel});
+                    newfig = figure(...
+                        'Name', get(panel{whichpanel}, 'Title'), ...
+                        'NumberTitle', 'off', ...
+                        'MenuBar', 'none', ...
+                        'Toolbar', 'none', ...
+                        'CloseRequestFcn', {@nDock, whichpanel});
+                    figpos = get(newfig, 'Position');
+                    set(newfig, 'Position', [figpos(1,1:2), pos(1,3:4)] );
+                    set(panel{whichpanel}, 'Parent', newfig, ...
+                        'Units', 'Normalized', ...
+                        'Position', [0 0 1 1]);
+                end
+            end % nDock
+            
+            %-------------------------------------------------------------------------%
+            function nCloseAll(~, ~)
+                % User wished to close the application, so we need to tidy up
+                
+                % Delete all windows, including undocked ones. We can do this by
+                % getting the window for each panel in turn and deleting it.
+                for ii=1:numel(panel)
+                    if isvalid(panel{ii}) && ~strcmpi(panel{ii}.BeingDeleted, 'on')
+                        figh = ancestor( panel{ii}, 'figure');
+                        delete figh);
+                    end
+                end
+                
+            end % nCloseAll
             %%%
         end % plotpca
         
