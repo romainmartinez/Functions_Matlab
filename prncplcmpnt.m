@@ -1,5 +1,7 @@
 classdef prncplcmpnt < handle
-    
+    %
+    %   Auteur:  Romain Martinez
+    %   email:   martinez.staps@gmail.com
     properties
         inputs
         x
@@ -33,6 +35,23 @@ classdef prncplcmpnt < handle
         %-------------------------------------------------------------------------%
         
         function obj = dscrb(obj)
+            % DSCRB  descriptive characteristics:
+            %   1) description panel: print the summary statistics for each
+            %   column.
+            %
+            %   2) correlation matrix: print the heatmap of the correlation
+            %   matrix for each column.
+            %
+            %   3) latent pannel: print the principal component variances
+            %   (eigenvalues of the covariance matrix of x), with the
+            %   corresponding inertia (% cumulated).
+            %
+            %   4) latent plot: plot the principal component variances.
+            %   The red bar represents the principal component variances to keep
+            %   according to the Kaiser criterion (>1).
+            %
+            %   See also MEAN, MEDIAN, QUANTILE, VAR, STD, CORR, PCA.
+            
             f = figure('units', 'normalized', 'outerposition', [0 0 1 1]);
             
             g = uix.Grid('Parent', f, 'Spacing', 5);
@@ -47,26 +66,30 @@ classdef prncplcmpnt < handle
                 std(obj.inputs.data)'];
             dscrb.mtrx = round(dscrb.mtrx, 2);
             
-            dscrb.panel = uix.Panel('Parent', g, 'Title', 'data description', 'Padding', 5);
+            dscrb.panel = uix.BoxPanel('Parent', g, 'Title', 'data description', 'Padding', 5,...
+                'HelpFcn', @(a,b) doc('dscrb'));
             dscrb.t = uitable('Parent', dscrb.panel,'Data',dscrb.mtrx);
-            dscrb.t.ColumnName = {'mean', 'median', 'Q1', 'Q3', 'range', 'variance', 'std'};
             dscrb.t.RowName = obj.inputs.vars;
+            dscrb.t.ColumnName = {'mean', 'median', 'Q1', 'Q3', 'range', 'variance', 'std'};
             
             % 2) correlation matrix
             crr.mtrx = corr(obj.inputs.data);
             crr.mtrx(crr.mtrx == 1) = nan;
-            crr.panel = uix.Panel('Parent', g, 'Title', 'correlation matrix', 'Padding', 5);
+            crr.panel = uix.BoxPanel('Parent', g, 'Title', 'correlation matrix', 'Padding', 5,...
+                'HelpFcn', @(a,b) doc('dscrb'));
             heatmap(obj.inputs.vars, obj.inputs.vars, crr.mtrx, 'Parent', crr.panel);
             
             % 3) latent pannel
-            latent.panel = uix.Panel('Parent', g, 'Title', 'latent pannel', 'Padding', 5);
+            latent.panel = uix.BoxPanel('Parent', g, 'Title', 'latent pannel', 'Padding', 5,...
+                'HelpFcn', @(a,b) doc('dscrb'));
             latent.data = [obj.x.latent, obj.x.explained, cumsum(obj.x.explained)];
             latent.t = uitable('Parent', latent.panel, 'Data', latent.data);
             latent.t.ColumnName = {'latent', '%', '% cumulated'};
             latent.t.RowName = 1:length(obj.inputs.vars);
             
             % 4) latent plot
-            latent.plot = uix.Panel('Parent', g, 'Title', 'latent plot', 'Padding', 5);
+            latent.plot = uix.BoxPanel('Parent', g, 'Title', 'latent plot', 'Padding', 5,...
+                'HelpFcn', @(a,b) doc('dscrb'));
             axes('Parent', latent.plot)
             hold on
             for ilat = 1:length(obj.x.latent)
@@ -85,12 +108,39 @@ classdef prncplcmpnt < handle
         %-------------------------------------------------------------------------%
         
         function plotpca(obj)
+            % PLOTPCA  principal components analysis:
+            %   1) CP1-CP2 factorial plane: plot the coordinates of the
+            %   original data in the new coordinate system defined by the
+            %   principal components. The red text correspond to outliers
+            %   based on Hotelling's T-squared statistic.
+            %
+            %   2) correlation circle: visualize each variable according to
+            %   their correlation coefficient with the principal
+            %   components. It allows to detect pattern in the variables.
+            %
+            %   3) biplot correlation (coeff, score):
+            %   visualize both the orthonormal principal component coefficients
+            %   for each variable and the principal component scores for each
+            %   observation.
+            %   All the variables are represented by a vector, and the
+            %   direction and length of the vector indicates how each
+            %   variable contributes to the two principal components.
+            %   The bi-pllot also includes a point for each observations,
+            %   with coordinates indicating the score for each observation
+            %   for the two principal components.
+            %
+            %   4) biplot distance (score, coeff)
+            %   variables-individus superposition
+            %
+            %   See also PCA, MEDIAN, QUANTILE, VAR, STD, CORR, PCA.
+            
             f = figure('units', 'normalized', 'outerposition', [0 0 1 1]);
             
             g = uix.Grid('Parent', f, 'Spacing', 5);
             
             % 1) CP1-CP2 factorial plane
-            panel{1} = uix.BoxPanel('Parent', g, 'Title', 'CP1-CP2 factorial plane', 'Padding', 5);
+            panel{1} = uix.BoxPanel('Parent', g, 'Title', 'CP1-CP2 factorial plane', 'Padding', 5,...
+                'HelpFcn', @(a,b) doc('plotpca'));
             axes('Parent', panel{1})
             scatter(obj.x.score(:,1), obj.x.score(:,2), 'filled', 'b^')
             text(obj.x.score(:,1), obj.x.score(:,2),...
@@ -99,9 +149,19 @@ classdef prncplcmpnt < handle
                 'HorizontalAlignment', 'right')
             xlabel('Factor 1 : CP1')
             ylabel('Factor 2 : CP2')
+            % detect outliers based on Hotelling's T-squared statistic
+            [~,index] = sort(obj.x.tsquared,'descend'); % sort in descending order
+            extreme = index(1:5);
+            text(obj.x.score(extreme,1), obj.x.score(extreme,2),...
+                obj.inputs.id(extreme),...
+                'color', 'r',...
+                'VerticalAlignment', 'bottom',...
+                'HorizontalAlignment', 'right')
+            obj.x.extreme = obj.inputs.id(extreme);
             
             % 2) correlation circle
-            panel{2} = uix.BoxPanel('Parent', g, 'Title', 'correlation circle', 'Padding', 5);
+            panel{2} = uix.BoxPanel('Parent', g, 'Title', 'correlation circle', 'Padding', 5,...
+                'HelpFcn', @(a,b) doc('plotpca'));
             axes('Parent', panel{2})
             quiver(zeros(size(obj.x.coeff, 1),1), zeros(size(obj.x.coeff, 1),1),...
                 obj.x.coeff(:,1), obj.x.coeff(:,2))
@@ -115,7 +175,8 @@ classdef prncplcmpnt < handle
             
             % 3) biplot correlation (coeff, score)
             % variables-individus superposition
-            panel{3} = uix.BoxPanel('Parent', g, 'Title', 'biplot correlation', 'Padding', 5);
+            panel{3} = uix.BoxPanel('Parent', g, 'Title', 'biplot correlation', 'Padding', 5,...
+                'HelpFcn', @(a,b) doc('plotpca'));
             axes('Parent', panel{3})
             biplot(obj.x.coeff(:,1:2), 'scores', obj.x.score(:,1:2),...
                 'varlabels', obj.inputs.vars,...
@@ -123,7 +184,8 @@ classdef prncplcmpnt < handle
             
             % 4) biplot distance (score, coeff)
             % variables-individus superposition
-            panel{4} = uix.BoxPanel('Parent', g, 'Title', 'biplot distance', 'Padding', 5);
+            panel{4} = uix.BoxPanel('Parent', g, 'Title', 'biplot distance', 'Padding', 5,...
+                'HelpFcn', @(a,b) doc('plotpca'));
             axes('Parent', panel{4}, 'ActivePositionProperty', 'outerposition')
             biplot(obj.x.score(:,1:2), 'scores', obj.x.coeff(:,1:2),...
                 'varlabels', obj.inputs.id,...
@@ -162,23 +224,6 @@ classdef prncplcmpnt < handle
                         'Position', [0 0 1 1]);
                 end
             end % nDock
-            
-            %-------------------------------------------------------------------------%
-            function nCloseAll(~, ~)
-                % User wished to close the application, so we need to tidy up
-                
-                % Delete all windows, including undocked ones. We can do this by
-                % getting the window for each panel in turn and deleting it.
-                for ii=1:numel(panel)
-                    if isvalid(panel{ii}) && ~strcmpi(panel{ii}.BeingDeleted, 'on')
-                        figh = ancestor( panel{ii}, 'figure');
-                        delete figh);
-                    end
-                end
-                
-            end % nCloseAll
-            %%%
         end % plotpca
-        
     end % methods
 end % main function
