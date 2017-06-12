@@ -65,11 +65,20 @@ participants = [
     ['marm' '1'];...
     ];
 
-participants(participants(:,5) == '0',:) = [];
+blacklist = participants(:,5) == '0';
+participants(blacklist,:) = [];
 
-if nargin > 0
+if nargin > 0 && contains(varargin, 'IRSST')
     temp(:,:) = strcat('IRSST_',[upper(participants(:,1)) participants(:,2:end-2) upper(participants(:,end-1))]);
     participants = cellstr(temp(:,1:end));
+elseif nargin > 0 && contains(varargin, 'weight')
+    temp(:,:) = strcat('IRSST_',[upper(participants(:,1)) participants(:,2:end-2) upper(participants(:,end-1))]);
+    participants = cellstr(temp(:,1:end));
+    weight = [55.5 55.8 61.4 66 56.7 54 63 70 67 86 68 94 79 91 65.9 65 87.5 51 68 61 51.5 52.3 60 54 72 63.5 65 85 69 ...
+        72 76 47 70 69.1 74 78 79 73 73 61.5 50 63 60 62 57 58 56 70 72 64 70 75 68 65 83 73 100 75 65 70];
+    weight(blacklist) = [];
+    participants(:,2) = num2cell(weight,1);
+    
 else
     participants = cellstr(participants(:,1:end-1));
 end
