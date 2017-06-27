@@ -168,10 +168,10 @@ classdef prncplcmpnt < handle
             text(obj.x.coeff(:,1), obj.x.coeff(:,2), obj.inputs.vars,...
                 'VerticalAlignment', 'bottom',...
                 'HorizontalAlignment', 'right')
-            viscircles([0 0], max(max(obj.x.coeff(:,1:2))), 'color', 'k');
+            viscircles([0 0], 1, 'color', 'k');
             axis equal
-            xlabel('Factor 1 : CP1')
-            ylabel('Factor 2 : CP2')
+            xlabel('Factor 1 : CP1'); xlim([-1 1])
+            ylabel('Factor 2 : CP2'); ylim([-1 1])
             
             % 3) biplot correlation (coeff, score)
             % variables-individus superposition
