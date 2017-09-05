@@ -52,7 +52,7 @@ Temporary Items
 ##---------------------------------------------------
 
 # Windows default autosave extension
-*.asv 
+*.asv
 
 # OSX / *nix default autosave extension
 *.m~
@@ -63,4 +63,11 @@ Temporary Items
 # Simulink Code Generation
 slprj/
 
-MOtoNMS/
+# gramm repo
+gramm/
+gramm/html/
+
+# spm1d repo
+spm1dmatlab/*
+
+spm1dmatlab
